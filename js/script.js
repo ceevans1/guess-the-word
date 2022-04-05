@@ -40,10 +40,46 @@ const makeGuess = function (letter) {
         messageArea.innerText = "You already used this letter. Try again!";
     } else {
         guessedLetters.push(upperLetter);
-        console.log(guessedLetters);
+        showGuessedLetter(guessedLetters);
+        showGoodGuess(guessedLetters);
     }
 
 }
+
+const showGuessedLetter = function (arr) {
+    guessedLettersList.innerHTML = "";
+    for (let letter of arr) {
+        const li = document.createElement("li");
+        li.innerText = letter;
+        guessedLettersList.append(li);
+    }
+}
+
+const showGoodGuess = function (arr) {
+    const wordUpper = word.toUpperCase();
+    const wordArray = wordUpper.split("");
+    const inProgressArray = wordInProgress.innerHTML.split("")
+    for (const letter of arr) {
+        for (let i = 0; i < wordArray.length; i++) {
+            if (letter === wordArray[i]) {
+                inProgressArray[i] = letter;
+            }
+        }
+    }
+    wordInProgress.innerHTML = inProgressArray.join("");
+    checkWin(wordUpper);
+}
+
+const checkWin = function (str) {
+    if (wordInProgress.innerHTML === str.toUpperCase()) {
+        messageArea.classList.add("win");
+        messageArea.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
+
+    }
+}
+
+
+
 guessButton.addEventListener("click", function (e) {
     e.preventDefault();
     messageArea.innerText = "";
